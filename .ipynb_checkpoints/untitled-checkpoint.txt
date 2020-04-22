@@ -1,0 +1,42 @@
+embed_dim = 128
+from torch_geometric.nn import GraphConv, TopKPooling, GatedGraphConv
+from torch_geometric.nn import global_mean_pool as gap, global_max_pool as gmp
+from torchvision import transforms
+
+import torch.nn.functional as F
+class Net(torch.nn.Module):
+    def __init__(self, num_embeddings = 1083, batch_size=10):
+        super(Net, self).__init__()
+        self.conv1 = SAGEConv(embed_dim, 100)
+        self.pool1 = TopKPooling(1, ratio=1)
+        self.lin1 = nn.Linear(128*100, 100)
+        self.lin1_act = nn.ReLU()
+        self.rec1 = nn.GRU(input_size = 100, hidden_size = 100,  batch_first =True)
+        self.rec1_act = nn.ReLU()
+        self.hidden_h0 = self.initial_h0()
+        self.item_embedding = torch.nn.Embedding(num_embeddings=num_embeddings, embedding_dim=embed_dim)
+        
+    def forward(self, data):
+        x, edge_index, batch = data.y, data.edge_index, data.batch
+        print(x.shape)
+        x = self.item_embedding(x.type(torch.LongTensor))
+        x = x.squeeze(1)        
+
+        x = F.relu(self.conv1(x, edge_index))
+        x, edge_index, _, batch,_, _= self.pool1(x, edge_index, None, batch) 
+        x = torch.flatten(x)
+        
+        x = self.lin1(x)
+        x= self.lin1_act(x)
+        #x = self.rec1(x, self.hidden_h0)
+        
+        #x =self.rec1_act(x)
+        #self.hidden_h0 = x
+        
+        
+        ## insert
+        return x , edge_index
+    
+    def initial_h0(self):
+        h0 = torch.randn(2, 3, 20)
+        return h0bincount
