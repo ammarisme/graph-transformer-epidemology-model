@@ -40,3 +40,17 @@ class Net(torch.nn.Module):
     def initial_h0(self):
         h0 = torch.randn(2, 3, 20)
         return h0bincount
+        
+        
+        
+tree estimator
+              
+#do the tree estimation
+#if(len(decoder_outputs) > 0):
+#    decoder_outputs = torch.stack(decoder_outputs)
+#    for i in range(2):
+#        for a in decoder_outputs:
+#            tree_estimator_optimizer.zero_grad()
+#            UV = tree_estimator(a)
+#            Us = tree_estimator.U
+#            loss += tree_estimator_criterion(torch.tensor(tree_estimate(Us)) , torch.tensor([1]))
