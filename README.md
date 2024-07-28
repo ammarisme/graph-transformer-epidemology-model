@@ -1,5 +1,5 @@
 
-# Project Summary
+# Graph + Transformers for Epidemology networks
 
 This project aims to design an experimental model to identify epidemic networks using a sample graph dataset from Foursquare. The project utilizes advanced machine learning and graph-based techniques to analyze and identify patterns within the data that can help in understanding the spread of epidemics.
 
